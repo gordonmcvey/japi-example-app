@@ -11,7 +11,7 @@ use gordonmcvey\JAPI\interface\controller\RequestHandlerInterface;
 use gordonmcvey\JAPI\interface\middleware\MiddlewareInterface;
 use JsonException;
 
-readonly final class PingTimer implements MiddlewareInterface
+readonly final class ProcessedTime implements MiddlewareInterface
 {
     private const string TIMESTAMP_FORMAT = "Y-m-d\TH:i:s.uP";
 

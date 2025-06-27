@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace gordonmcvey\exampleapp\controller\health;
+namespace gordonmcvey\exampleapp\controller\Health;
 
 use gordonmcvey\exampleapp\middleware\RequestMeta;
 use gordonmcvey\httpsupport\enum\statuscodes\ClientErrorCodes;
