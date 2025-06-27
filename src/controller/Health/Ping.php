@@ -20,9 +20,10 @@ class Ping implements RequestHandlerInterface, MiddlewareProviderInterface
         return new Response(
             responseCode: SuccessCodes::OK,
             body: (string) json_encode([
-                "requestId" => $request->header(RequestMeta::HEADER_REQUEST_ID),
+                "requestId" => $request->header(RequestMeta::HEADER_REQUEST_ID, "unknown"),
                 'healthy'   => true,
                 "received"  => $request->header(RequestMeta::HEADER_RECEIVED, "unknown"),
+                "processed" => "unknown",
             ]),
             contentType: 'application/json',
             encoding: 'utf-8',
