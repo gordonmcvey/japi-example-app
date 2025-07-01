@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 $received = new DateTimeImmutable();
 
-use DI\ContainerBuilder as ContainerBuilderAlias;
+use DI\ContainerBuilder;
 use gordonmcvey\httpsupport\request\RequestInterface;
 use gordonmcvey\JAPI\Bootstrap;
 use gordonmcvey\JAPI\ErrorToException;
@@ -18,9 +18,9 @@ error_reporting(0);
 ini_set('display_errors', false);
 set_error_handler(new errorToException(), E_ERROR ^ E_USER_ERROR ^ E_COMPILE_ERROR);
 
-$container = (new ContainerBuilderAlias())
+$container = (new ContainerBuilder())
     ->enableCompilation(__DIR__ . '/../.dicache')
-    ->addDefinitions(__DIR__ . '/../containerconfig.php')
+    ->addDefinitions(__DIR__ . '/../config/di/containerconfig.php')
     ->build()
 ;
 $container->set("received", $received);
