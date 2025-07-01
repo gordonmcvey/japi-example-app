@@ -1,3 +1,4 @@
+/.dicache/
 /.idea/
 /vendor/
 /.env
