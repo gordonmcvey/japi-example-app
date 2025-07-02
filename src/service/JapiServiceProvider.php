@@ -4,8 +4,6 @@ namespace gordonmcvey\exampleapp\service;
 
 use gordonmcvey\exampleapp\factory\DiControllerFactory;
 use gordonmcvey\exampleapp\middleware\RequestMeta;
-use gordonmcvey\httpsupport\request\payload\JsonPayloadHandler;
-use gordonmcvey\httpsupport\request\Request;
 use gordonmcvey\JAPI\Bootstrap;
 use gordonmcvey\JAPI\interface\controller\ControllerFactoryInterface;
 use gordonmcvey\JAPI\interface\error\ErrorHandlerInterface;
@@ -31,14 +29,9 @@ class JapiServiceProvider extends AbstractServiceProvider
     {
         $this->container->add(ControllerFactoryInterface::class, DiControllerFactory::class)->addArgument($this->container);
         $this->container->add(Bootstrap::class)->addArguments([RouterInterface::class, ControllerFactoryInterface::class]);
-
         $this->container->add(JAPI::class)
             ->addArguments([CallStackFactory::class, ErrorHandlerInterface::class])
             ->addMethodCall("addMiddleware", [RequestMeta::class])
-            ->addMethodCall("bootstrap", [
-                Bootstrap::class,
-                Request::fromSuperGlobals($this->container->get(JsonPayloadHandler::class)),
-            ])
         ;
     }
 }
