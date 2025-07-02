@@ -9,6 +9,9 @@ use gordonmcvey\exampleapp\service\ErrorHandlerServiceProvider;
 use gordonmcvey\exampleapp\service\JapiServiceProvider;
 use gordonmcvey\exampleapp\service\MiddlewareServiceProvider;
 use gordonmcvey\exampleapp\service\RouterServiceProvider;
+use gordonmcvey\httpsupport\request\payload\JsonPayloadHandler;
+use gordonmcvey\httpsupport\request\Request;
+use gordonmcvey\JAPI\Bootstrap;
 use gordonmcvey\JAPI\ErrorToException;
 use gordonmcvey\JAPI\JAPI;
 use gordonmcvey\JAPI\ShutdownHandler;
@@ -41,4 +44,8 @@ $container
     ->addServiceProvider(new RouterServiceProvider())
     ->addServiceProvider(new JapiServiceProvider())
     ->get(JAPI::class)
+    ->bootstrap(
+        $container->get(Bootstrap::class),
+        Request::fromSuperGlobals($container->get(JsonPayloadHandler::class)),
+    )
 ;
