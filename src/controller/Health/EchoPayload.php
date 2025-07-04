@@ -15,7 +15,7 @@ use gordonmcvey\JAPI\Exceptions\Routing;
 use gordonmcvey\JAPI\interface\controller\RequestHandlerInterface;
 use JsonException;
 
-class EchoPayload implements RequestHandlerInterface
+final readonly class EchoPayload implements RequestHandlerInterface
 {
     private const array ALLOWED_METHODS = [
         Verbs::POST,
