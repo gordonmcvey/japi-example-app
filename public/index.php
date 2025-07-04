@@ -28,7 +28,11 @@ error_reporting(0);
 ini_set('display_errors', false);
 set_error_handler(new errorToException(), E_ERROR ^ E_USER_ERROR ^ E_COMPILE_ERROR);
 
-$errorHandler = new JsonErrorHandler(new StatusCodeFactory(), exposeDetails: true);
+$errorHandler = new JsonErrorHandler(
+    statusCodeFactory: new StatusCodeFactory(),
+    jsonFlags: JSON_PRETTY_PRINT,
+    exposeDetails: true,
+);
 
 register_shutdown_function(new ShutdownHandler($errorHandler));
 
