@@ -14,7 +14,7 @@ use gordonmcvey\JAPI\interface\controller\RequestHandlerInterface;
 use gordonmcvey\JAPI\interface\middleware\MiddlewareProviderInterface;
 use gordonmcvey\JAPI\middleware\MiddlewareProviderTrait;
 
-final readonly class Ping implements RequestHandlerInterface, MiddlewareProviderInterface
+final class Ping implements RequestHandlerInterface, MiddlewareProviderInterface
 {
     use MiddlewareProviderTrait;
 
