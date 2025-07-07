@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 $received = new DateTimeImmutable();
 
+use Dotenv\Dotenv;
 use gordonmcvey\exampleapp\controller\health\Ping;
 use gordonmcvey\exampleapp\middleware\ProcessedTime;
 use gordonmcvey\exampleapp\middleware\RequestMeta;
@@ -21,17 +22,27 @@ use gordonmcvey\JAPI\routing\PathNamespaceStrategy;
 use gordonmcvey\JAPI\routing\Router;
 use gordonmcvey\JAPI\ShutdownHandler;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . "/../vendor/autoload.php";
 
-// For live you don't want any error output.  You might want to use different values here for local development/testing
-error_reporting(0);
-ini_set('display_errors', false);
+$dotenv = Dotenv::createImmutable(__DIR__ . "/../");
+$dotenv->load();
+
+$dotenv->required("APP_CONTROLLER_NAMESPACE_ROOT");
+$dotenv->ifPresent("ERROR_REPORTING")->isInteger();
+$dotenv->ifPresent("DISPLAY_ERRORS");
+$dotenv->ifPresent("DISPLAY_STARTUP_ERRORS")->isBoolean();
+$dotenv->ifPresent("PRETTY_PRINT_JSON")->isBoolean();
+$dotenv->ifPresent("DETAILED_ERROR_OUTPUT")->isBoolean();
+
+error_reporting(((int) $_ENV["ERROR_REPORTING"]) ?? 0);
+ini_set("display_errors", ((string) $_ENV["DISPLAY_ERRORS"]) ?? "");
+ini_set("display_startup_errors", (bool) $_ENV["DISPLAY_STARTUP_ERRORS"]);
 set_error_handler(new errorToException(), E_ERROR ^ E_USER_ERROR ^ E_COMPILE_ERROR);
 
 $errorHandler = new JsonErrorHandler(
     statusCodeFactory: new StatusCodeFactory(),
-    jsonFlags: JSON_PRETTY_PRINT,
-    exposeDetails: true,
+    jsonFlags: ((bool) $_ENV["PRETTY_PRINT_JSON"]) ? JSON_PRETTY_PRINT : 0,
+    exposeDetails: (bool) $_ENV["DETAILED_ERROR_OUTPUT"],
 );
 
 register_shutdown_function(new ShutdownHandler($errorHandler));
@@ -40,7 +51,7 @@ register_shutdown_function(new ShutdownHandler($errorHandler));
     ->addMiddleware(new RequestMeta($received))
     ->bootstrap(
         function (RequestInterface $request): RequestHandlerInterface {
-            $router = new Router(new PathNamespaceStrategy("gordonmcvey\\exampleapp\\controller"));
+            $router = new Router(new PathNamespaceStrategy($_ENV["APP_CONTROLLER_NAMESPACE_ROOT"]));
             $controller = (new ControllerFactory())->make($router->route($request));
             $controller instanceof Ping && $controller->addMiddleware(new ProcessedTime());
 
