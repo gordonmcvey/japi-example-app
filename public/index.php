@@ -5,6 +5,7 @@ declare(strict_types=1);
 $received = new DateTimeImmutable();
 
 use gordonmcvey\exampleapp\service\ControllerServiceProvider;
+use gordonmcvey\exampleapp\service\EnvServiceProvider;
 use gordonmcvey\exampleapp\service\ErrorHandlerServiceProvider;
 use gordonmcvey\exampleapp\service\JapiServiceProvider;
 use gordonmcvey\exampleapp\service\MiddlewareServiceProvider;
@@ -20,11 +21,6 @@ use League\Container\ReflectionContainer;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// For live you don't want any error output.  You might want to use different values here for local development/testing
-error_reporting(0);
-ini_set('display_errors', false);
-set_error_handler(new errorToException(), E_ERROR ^ E_USER_ERROR ^ E_COMPILE_ERROR);
-
 $container = new Container();
 
 $container
@@ -32,11 +28,17 @@ $container
     ->defaultToShared()
 ;
 
+$container->addServiceProvider(new EnvServiceProvider(__DIR__ . "/../"));
+
+error_reporting($container->get(EnvServiceProvider::ERROR_REPORTING));
+ini_set("display_errors", ($container->get(EnvServiceProvider::DISPLAY_ERRORS)));
+ini_set("display_startup_errors", (bool) $container->get(EnvServiceProvider::DISPLAY_STARTUP_ERRORS));
+set_error_handler(new errorToException(), E_ERROR ^ E_USER_ERROR ^ E_COMPILE_ERROR);
+
 $container->addServiceProvider(new ErrorHandlerServiceProvider());
 register_shutdown_function($container->get(ShutdownHandler::class));
 
 $container->add("received", $received);
-$container->add("controllerRoot", "gordonmcvey\\exampleapp\\controller");
 
 $container
     ->addServiceProvider(new MiddlewareServiceProvider())

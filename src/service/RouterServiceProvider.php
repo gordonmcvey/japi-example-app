@@ -27,14 +27,15 @@ class RouterServiceProvider extends AbstractServiceProvider
                 RoutingStrategyInterface::class,
                 PathNamespaceStrategy::class,
             )
-            ->addArgument("controllerRoot")
+            ->addArgument(EnvServiceProvider::APP_CONTROLLER_NAMESPACE_ROOT)
         ;
 
         $this->container
             ->add(
                 RouterInterface::class,
                 Router::class,
-            )->addArgument(RoutingStrategyInterface::class)
+            )
+            ->addArgument(RoutingStrategyInterface::class)
         ;
     }
 }
