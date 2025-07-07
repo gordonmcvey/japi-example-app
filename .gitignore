@@ -1,4 +1,5 @@
 /.dicache/
 /.idea/
 /vendor/
+/.env
 /composer.lock
