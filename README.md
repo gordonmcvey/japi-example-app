@@ -4,9 +4,21 @@ This is a simple application for my [JAPI refactoring project](https://github.co
 
 ## Running
 
-You can run it locally or in a Docker container with whatever web server you prefer, or you can run it directly with PHP's built in web server (obviously you should only use that for local testing/development and not in a production environment!)
+You can run the application locally or in a Docker container with whatever web server you prefer, or you can run it directly with PHP's built in web server (obviously you should only use that for local testing/development and not in a production environment!)
 
-Running it with PHP's web server is simply a matter of cloning the repo and running the following commands from its root directory:
+Running it with PHP's web server is simply a matter of cloning the repo, setting up the appropriate `.env` file, and running the PHP web server from the `/public` subdirectory:
+
+If you want to set up for development with debugging options enabled:
+```shell
+cp .env.example.dev .env
+```
+
+or if you want to set up for production with debugging options disabled:
+```shell
+cp .env.example.prod .env
+```
+
+Then, run the application:
 
 ```shell
 composer install
