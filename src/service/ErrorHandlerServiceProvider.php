@@ -24,6 +24,10 @@ class ErrorHandlerServiceProvider  extends AbstractServiceProvider
     public function register(): void
     {
         $this->container->add(ErrorHandlerInterface::class, JsonErrorHandler::class)
-            ->addArguments([StatusCodeFactory::class, JSON_PRETTY_PRINT, true]);
+            ->addArguments([
+                StatusCodeFactory::class,
+                EnvServiceProvider::PRETTY_PRINT_JSON,
+                EnvServiceProvider::DETAILED_ERROR_OUTPUT,
+            ]);
     }
 }
