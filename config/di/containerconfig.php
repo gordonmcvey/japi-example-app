@@ -24,9 +24,8 @@ use Psr\Container\ContainerInterface;
 
 return [
     // Attributes
-    "controllerRoot"                  => DI\string("gordonmcvey\\exampleapp\\controller"),
-    "jsonFlags"                       => DI\value(JSON_PRETTY_PRINT),
-    "exposeErrorDetails"              => DI\value(true),
+    "jsonFlags"                       => DI\factory(fn() => !empty($_ENV["PRETTY_PRINT_JSON"]) ? JSON_PRETTY_PRINT : 0),
+    "exposeErrorDetails"              => DI\factory(fn() => !empty($_ENV["DETAILED_ERROR_OUTPUT"])),
     // HTTP request
     RequestInterface::class           => fn(ContainerInterface $container): Request
         => Request::fromSuperGlobals($container->get(JsonPayloadHandler::class)),
@@ -46,7 +45,7 @@ return [
         ->method("addMiddleware", DI\get(ProcessedTime::class)),
     // Routing
     RoutingStrategyInterface::class   => DI\create(PathNamespaceStrategy::class)
-        ->constructor(DI\get("controllerRoot")),
+        ->constructor(DI\env("APP_CONTROLLER_NAMESPACE_ROOT")),
     RouterInterface::class            => DI\create(Router::class)
         ->constructor(DI\get(RoutingStrategyInterface::class)),
     // JAPI
