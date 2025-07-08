@@ -1,4 +1,4 @@
-/.dicache/
+/.cache/
 /.idea/
 /vendor/
 /.env
