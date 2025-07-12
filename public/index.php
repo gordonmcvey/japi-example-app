@@ -27,18 +27,19 @@ require_once __DIR__ . "/../vendor/autoload.php";
 $dotenv = Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 
-$dotenv->required("APP_CONTROLLER_NAMESPACE_ROOT");
 $dotenv->ifPresent("ERROR_REPORTING")->isInteger();
-$dotenv->ifPresent("DISPLAY_ERRORS");
-$dotenv->ifPresent("DISPLAY_STARTUP_ERRORS")->isBoolean();
-$dotenv->ifPresent("PRETTY_PRINT_JSON")->isBoolean();
-$dotenv->ifPresent("DETAILED_ERROR_OUTPUT")->isBoolean();
-
 error_reporting(((int) $_ENV["ERROR_REPORTING"]) ?? 0);
+
+$dotenv->ifPresent("DISPLAY_ERRORS");
 ini_set("display_errors", ((string) $_ENV["DISPLAY_ERRORS"]) ?? "");
+
+$dotenv->ifPresent("DISPLAY_STARTUP_ERRORS")->isBoolean();
 ini_set("display_startup_errors", (bool) $_ENV["DISPLAY_STARTUP_ERRORS"]);
+
 set_error_handler(new errorToException(), E_ERROR ^ E_USER_ERROR ^ E_COMPILE_ERROR);
 
+$dotenv->ifPresent("PRETTY_PRINT_JSON")->isBoolean();
+$dotenv->ifPresent("DETAILED_ERROR_OUTPUT")->isBoolean();
 $errorHandler = new JsonErrorHandler(
     statusCodeFactory: new StatusCodeFactory(),
     jsonFlags: ((bool) $_ENV["PRETTY_PRINT_JSON"]) ? JSON_PRETTY_PRINT : 0,
@@ -46,6 +47,8 @@ $errorHandler = new JsonErrorHandler(
 );
 
 register_shutdown_function(new ShutdownHandler($errorHandler));
+
+$dotenv->required("APP_CONTROLLER_NAMESPACE_ROOT");
 
 (new JAPI(new CallStackFactory(), $errorHandler))
     ->addMiddleware(new RequestMeta($received))
