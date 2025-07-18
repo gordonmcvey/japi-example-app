@@ -12,6 +12,7 @@ use gordonmcvey\httpsupport\enum\factory\StatusCodeFactory;
 use gordonmcvey\httpsupport\request\payload\JsonPayloadHandler;
 use gordonmcvey\httpsupport\request\Request;
 use gordonmcvey\httpsupport\request\RequestInterface;
+use gordonmcvey\httpsupport\response\sender\ResponseSender;
 use gordonmcvey\JAPI\controller\ControllerFactory;
 use gordonmcvey\JAPI\error\JsonErrorHandler;
 use gordonmcvey\JAPI\ErrorToException;
@@ -46,11 +47,12 @@ $errorHandler = new JsonErrorHandler(
     exposeDetails: (bool) $_ENV["DETAILED_ERROR_OUTPUT"],
 );
 
-register_shutdown_function(new ShutdownHandler($errorHandler));
+$sender = new ResponseSender();
+register_shutdown_function(new ShutdownHandler($sender, $errorHandler));
 
 $dotenv->required("APP_CONTROLLER_NAMESPACE_ROOT");
 
-(new JAPI(new CallStackFactory(), $errorHandler))
+(new JAPI(new CallStackFactory(), $errorHandler, $sender))
     ->addMiddleware(new RequestMeta($received))
     ->bootstrap(
         function (RequestInterface $request): RequestHandlerInterface {
