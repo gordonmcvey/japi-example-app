@@ -31,7 +31,7 @@ ini_set("display_startup_errors", (bool) $_ENV["DISPLAY_STARTUP_ERRORS"]);
 set_error_handler(new errorToException(), E_ERROR ^ E_USER_ERROR ^ E_COMPILE_ERROR);
 
 $builder = new ContainerBuilder();
-if ((bool) $_ENV["DI_COMPILE_DIR"]) {
+if (!empty($_ENV["DI_COMPILE_DIR"])) {
     $builder->enableCompilation($_ENV["DI_COMPILE_DIR"]);
 }
 $container = $builder
