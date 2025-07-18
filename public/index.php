@@ -12,6 +12,8 @@ use gordonmcvey\exampleapp\service\MiddlewareServiceProvider;
 use gordonmcvey\exampleapp\service\RouterServiceProvider;
 use gordonmcvey\httpsupport\request\payload\JsonPayloadHandler;
 use gordonmcvey\httpsupport\request\Request;
+use gordonmcvey\httpsupport\response\sender\ResponseSender;
+use gordonmcvey\httpsupport\response\sender\ResponseSenderInterface;
 use gordonmcvey\JAPI\Bootstrap;
 use gordonmcvey\JAPI\ErrorToException;
 use gordonmcvey\JAPI\JAPI;
@@ -28,6 +30,7 @@ $container
     ->defaultToShared()
 ;
 
+$container->add(ResponseSenderInterface::class, ResponseSender::class);
 $container->addServiceProvider(new EnvServiceProvider(__DIR__ . "/../"));
 
 error_reporting($container->get(EnvServiceProvider::ERROR_REPORTING));
