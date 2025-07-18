@@ -4,6 +4,7 @@ namespace gordonmcvey\exampleapp\service;
 
 use gordonmcvey\exampleapp\factory\DiControllerFactory;
 use gordonmcvey\exampleapp\middleware\RequestMeta;
+use gordonmcvey\httpsupport\response\sender\ResponseSenderInterface;
 use gordonmcvey\JAPI\Bootstrap;
 use gordonmcvey\JAPI\interface\controller\ControllerFactoryInterface;
 use gordonmcvey\JAPI\interface\error\ErrorHandlerInterface;
@@ -30,7 +31,7 @@ class JapiServiceProvider extends AbstractServiceProvider
         $this->container->add(ControllerFactoryInterface::class, DiControllerFactory::class)->addArgument($this->container);
         $this->container->add(Bootstrap::class)->addArguments([RouterInterface::class, ControllerFactoryInterface::class]);
         $this->container->add(JAPI::class)
-            ->addArguments([CallStackFactory::class, ErrorHandlerInterface::class])
+            ->addArguments([CallStackFactory::class, ErrorHandlerInterface::class, ResponseSenderInterface::class])
             ->addMethodCall("addMiddleware", [RequestMeta::class])
         ;
     }
