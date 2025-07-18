@@ -10,6 +10,8 @@ use gordonmcvey\httpsupport\enum\factory\StatusCodeFactory;
 use gordonmcvey\httpsupport\request\payload\JsonPayloadHandler;
 use gordonmcvey\httpsupport\request\Request;
 use gordonmcvey\httpsupport\request\RequestInterface;
+use gordonmcvey\httpsupport\response\sender\ResponseSender;
+use gordonmcvey\httpsupport\response\sender\ResponseSenderInterface;
 use gordonmcvey\JAPI\Bootstrap;
 use gordonmcvey\JAPI\error\JsonErrorHandler;
 use gordonmcvey\JAPI\interface\controller\ControllerFactoryInterface;
@@ -26,6 +28,8 @@ return [
     // Attributes
     "jsonFlags"                       => DI\factory(fn() => !empty($_ENV["PRETTY_PRINT_JSON"]) ? JSON_PRETTY_PRINT : 0),
     "exposeErrorDetails"              => DI\factory(fn() => !empty($_ENV["DETAILED_ERROR_OUTPUT"])),
+    // Core
+    ResponseSenderInterface::class    => DI\create(ResponseSender::class),
     // HTTP request
     RequestInterface::class           => fn(ContainerInterface $container): Request
         => Request::fromSuperGlobals($container->get(JsonPayloadHandler::class)),
@@ -55,6 +59,10 @@ return [
             DI\get(ControllerFactoryInterface::class),
         ),
     JAPI::class                       => DI\create(JAPI::class)
-        ->constructor(DI\get(CallStackFactory::class), DI\get(ErrorHandlerInterface::class))
+        ->constructor(
+            DI\get(CallStackFactory::class),
+            DI\get(ErrorHandlerInterface::class),
+            DI\get(ResponseSender::class),
+        )
         ->method("addMiddleware", DI\get(RequestMeta::class)),
 ];
