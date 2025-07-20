@@ -23,6 +23,7 @@
         <service id="JAPI" class="gordonmcvey\JAPI\JAPI">
             <argument type="service" id="CallStackFactory" />
             <argument type="service" id="ErrorHandlerInterface" />
+            <argument type="service" id="ResponseSenderInterface" />
             <call method="addMiddleware">
                 <argument type="service" id="RequestMeta" />
             </call>

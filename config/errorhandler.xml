@@ -7,6 +7,7 @@
     <services>
         <defaults autoconfigure="true" autowire="true"/>
 
+        <service id="ResponseSenderInterface" class="gordonmcvey\httpsupport\response\sender\ResponseSender" />
         <service id="StatusCodeFactory" class="gordonmcvey\httpsupport\enum\factory\StatusCodeFactory" />
 
         <service id="ErrorHandlerInterface" class="gordonmcvey\JAPI\error\JsonErrorHandler">
@@ -16,6 +17,7 @@
         </service>
 
         <service id="ShutdownHandler" class="gordonmcvey\JAPI\ShutdownHandler">
+            <argument type="service" id="ResponseSenderInterface" />
             <argument type="service" id="ErrorHandlerInterface" />
         </service>
     </services>
