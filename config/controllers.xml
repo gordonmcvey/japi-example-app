@@ -8,6 +8,7 @@
     <services>
         <defaults autoconfigure="true" autowire="true"/>
 
+        <service id="gordonmcvey\exampleapp\controller\Health\EchoPayload" class="gordonmcvey\exampleapp\controller\Health\EchoPayload"/>
         <service id="gordonmcvey\exampleapp\controller\Health\Ping" class="gordonmcvey\exampleapp\controller\Health\Ping">
             <call method="addMiddleware">
                 <argument type="service" id="ProcessedTime" />
