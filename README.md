@@ -44,13 +44,13 @@ When the application is running, you can trigger its endpoints with HTTP request
 There are two endpoints available: 
 
 * `/health/ping`: Returns a simple response with when the request was received and when it was dispatched (can only be invoked with `GET`)
-* `/health/echopayload`: Takes whatever JSON is in the request body and echos it back (can only be invoked with `POST` or `PUT`)
+* `/health/echo-payload`: Takes whatever JSON is in the request body and echos it back (can only be invoked with `POST` or `PUT`)
 
 ### Bruno Collection
 
 The repo includes a collection of [Bruno](https://www.usebruno.com/) requests that include documentation and examples.  You can import them into Bruno and run them from there.  
 
-As the `echopayload` endpoint requires you to `POST` or `PUT` a JSON document, running it from a browser, from CURL, etc would be tricky, but the `ping` endpoint can be invoked with a simple `GET` request.  
+As the `echo-payload` endpoint requires you to `POST` or `PUT` a JSON document, running it from a browser, from CURL, etc would be tricky, but the `ping` endpoint can be invoked with a simple `GET` request.  
 
 ## Rationale
 

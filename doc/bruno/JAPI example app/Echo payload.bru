@@ -5,7 +5,7 @@ meta {
 }
 
 put {
-  url: http://{{host}}/health/echopayload
+  url: http://{{host}}/health/echo-payload
   body: json
   auth: inherit
 }
@@ -69,19 +69,19 @@ docs {
     "code": 400,
     "msg": "Exception",
     "detail": "gordonmcvey\\JAPI\\Exceptions\\Routing: Payload is not valid JSON",
-    "file": "/src/controller/Health/Echopayload.php",
+    "file": "/src/controller/Health/EchoPayload.php",
     "line": 38
   }
   ```
   
-  ### Method not allowed
+  ### Response for disallowed HTTP method
   
   ```json
   {
     "code": 405,
     "msg": "Exception",
     "detail": "gordonmcvey\\JAPI\\Exceptions\\Routing: Method not allowed",
-    "file": "/src/controller/Health/Echopayload.php",
+    "file": "/src/controller/Health/EchoPayload.php",
     "line": 32
   }
   ```
